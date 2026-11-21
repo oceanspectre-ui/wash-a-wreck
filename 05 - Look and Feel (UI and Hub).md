@@ -23,6 +23,18 @@ Related: [[02 - Systems and Reskin Guide]], [[04 - Tow Animation and Feel]].
 | Tags | Small tilted yellow label on a card: "BEST SELLER!", "BEST DEAL!". |
 | Colour pairs | Cyan to blue, yellow to orange, pink to purple, orange to red, lime to green. |
 
+## Stud pattern (added 2026-11-21)
+Every main UI surface has a light stud pattern over it: window panels and headers, shop and index cards, and the big buttons.
+
+- **The image** is Roblox's own classic stud tile, `rbxasset://textures/ui/Studs.png`. Nothing was uploaded.
+- **One setting changes it everywhere:** `StudImage` in `ReplicatedStorage.Shared.UiStyleConfig`. `UiStyleController` applies it to every ImageLabel tagged `StudLayer`, including ones cloned from templates while the game runs.
+- **Strength:** the built-in tile is solid grey, so it is laid on lightly (80–88% see-through) and the colours underneath were pushed about 15% more saturated to stay vivid. A custom see-through stud tile could be shown much stronger; put its `rbxassetid://` in `StudImage` to switch.
+- **Per layer:** attributes `StudTransparency` and `StudTile` on a layer override the config.
+- **Adding studs to a new surface:** put an ImageLabel named `Studs` inside it (size 1,1, transparent background), tag it `StudLayer`, and give it a ZIndex below the surface's other children.
+- 103 layers exist in the saved UI (122 in play, with cloned slots): shop 27, index 46, garage 7, teleport 7, side buttons 5, tow HUD 5, codes 2, leaderboard 2, clean bar and shop frame 2.
+
+Not covered: the money bar, the upgrade board, and text-only elements.
+
 ## Shop window
 `StarterGui.MainHUD.ShopPanel`, driven by `ShopController` (both existed already). Restyled in place on 2026-11-21 so the script kept working:
 - Each card got a **Burst** (the rays) and a **Badge** (the coin) behind its `Picture`.
@@ -56,5 +68,4 @@ Nothing can be bought yet: every card's `AssetId` is 0, so its button says "Comi
 
 ## Not done
 - No custom icons: pictures are emoji. Real icon art would lift the shop the most.
-- Garage, Index, Teleport, Codes and Leaderboard windows were not touched in this pass.
-- No dotted texture on the shop background (needs an image asset).
+- Garage, Index, Teleport, Codes and Leaderboard windows got the stud pattern but no other restyling.
