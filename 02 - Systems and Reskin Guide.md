@@ -22,9 +22,10 @@ So any model, colour, size or position can change. Delete all of `Workspace.Swam
 | Tag | Where | What it does |
 |---|---|---|
 | `SwampOrigin` | 1 part in `Swamp.Gameplay` | Depth 0. Its front face points "deeper". Move or rotate it to move the whole swamp. |
-| `WreckSpawn` | 36 parts in `Swamp.Gameplay.WreckSpawns` | A wreck can appear here. Its zone comes from how deep it is. Add more by tagging any part. |
-| `TowDropZone` | 1 box in each plot's `Markers` | The owner standing inside it while towing delivers the wreck. |
-| `SafeZone` | 9 boxes in `Swamp.Gameplay.SafeZones` | Reserved for the chaser (not built yet). |
+| `WreckSpawn` | 140 parts in `Swamp.Gameplay.WreckSpawns` | A wreck can appear here. Its zone comes from how deep it is. Its height does not matter: wrecks sit on the terrain below it. Add more by tagging any part. |
+| `TowDropZone` | 1 box in each plot | The owner standing inside it while towing delivers the wreck. |
+| `PlotSpawn` | 1 part in each plot | Where the plot's owner spawns. Keep it within about 15 studs of the wash bay car so a new player can spray at once. |
+| `SafeZone` | 10 boxes in `Swamp.Gameplay.SafeZones` | Reserved for the chaser (not built yet). |
 
 Each marker and folder has a `Note` attribute in Studio saying what it is for.
 
@@ -48,8 +49,10 @@ Each marker and folder has a `Note` attribute in Studio saying what it is for.
 | HUD | Tow and upgrade HUDs are built in code by `TowController` and `UpgradeController` | Replace with designed ScreenGuis later; the server side does not change. |
 
 ## Not modular yet (known debt)
-- ~~One live plot.~~ **Done 2026-11-21:** all 8 plots are live. Every Model in `Workspace.Plots` is a plot; copy one to add another. A plot needs `Garage.WashBay.Core`, showroom pads, and `Markers` with a `TowDropZone` and a `PlotSpawn` (tag `PlotSpawn`: where its owner spawns). No script uses a plot by name.
-- **Server size.** The place allows 60 players but there are 8 plots. Player 9+ waits in a queue with no plot. Set max players to 8 in Game Settings.
+- ~~One live plot.~~ **Done 2026-11-21:** every Model in `Workspace.Plots` is a live plot (6 on the current map); copy one to add another. A plot needs `Garage.WashBay.Core`, showroom pads, a `TowDropZone` and a `PlotSpawn`. No script uses a plot by name.
+- **Server size.** The place allows 60 players but there are 6 plots. Player 7+ waits in a queue with no plot. Set max players to 6 in Game Settings.
+- **Central tow truck not wired.** `Workspace.Map.TowTruck` has a `HookLaunchPoint` and `HookCorridor`, but towing is still on foot. Decided design, not built: throw the hook from the truck, the winch reels the wreck in, and it goes straight to your bay. Tow gear sets how far you can throw.
+- **Teleport window has 3 swamp rows.** The server accepts `Swamp1`–`Swamp10`; add a row named `Swamp7` to the Teleport window to offer it.
 - **One car shape.** Every wreck uses the same wash bay car, recoloured. Per-wreck models need a `CarTemplates` folder and a mud layout per model.
 - **Mud is box-based.** Mud chunks are generated on box faces, so a Blender car needs simple hidden boxes with `MudFaces`, or a new mud method.
 
@@ -80,6 +83,20 @@ Each marker and folder has a `Note` attribute in Studio saying what it is for.
 - Keep put the car in the showroom at $50/s. Sell paid out.
 - Dropping mid-tow leaves the wreck on the ground, hookable again.
 - **Not tested:** a real human playing on a phone, two players at once, real saves.
+
+## Maintenance pass on the new map (2026-11-21)
+Fixed:
+- Wrecks now sit on the terrain (sunk 1 stud) instead of at the marker's height, which had left many buried.
+- 2 spawn markers moved out of solid props.
+- Plot spawns moved from 26 to 15 studs from the car. From 26, the far side of the car was out of spray range, so a new player's first sprays did nothing.
+- Wash bays stream to a client as one piece, so the wash HUD never binds to a half-loaded car.
+- Teleporting is refused while towing (it skipped the walk home).
+- Zone lighting follows `SwampConfig` instead of a hard-coded zone width.
+- Teleport accepts any zone number from `SwampConfig`.
+
+Checked and fine: every remote goes through `SecurityHelper`; no script uses a plot by name; no unanchored parts; full loop (wash, keep, sell, upgrade, teleport, hook, deliver) ran with no errors.
+
+Left alone: `ServerStorage._OldGuiBackup` (old UI scripts) and `ServerStorage._MapBuilder` (the map generator). Neither runs in the game.
 
 ## Still to decide
 - [ ] Tow on foot or drive a truck?

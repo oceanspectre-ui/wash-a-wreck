@@ -2,34 +2,43 @@
 project: Wash a Wreck
 status: greybox
 created: 2026-11-21
+updated: 2026-11-21
 tags: [roblox, wash-a-wreck, level-design, greybox]
 ---
 
-# Swamp Layout (Greybox)
+# Map Layout
 
-Built in Studio on 2026-11-21. **Everything visible is a grey placeholder.** It exists to test layout and walk times, and is meant to be thrown away and rebuilt in Blender.
+The map was rebuilt on 2026-11-21 (hub + 10 swamps). This note describes that version. Everything visible is still replaceable art: see [[02 - Systems and Reskin Guide]].
 
-Part of [[00 - Wash a Wreck - Master Plan]]. How to swap the art: [[02 - Systems and Reskin Guide]].
+Part of [[00 - Wash a Wreck - Master Plan]].
 
-## The idea
-Every plot has a **tow hitch** at its front edge. The swamp starts right past the hitches and gets deeper the further you walk. Deeper = rarer wrecks. You hook a wreck, drag it back to your hitch, and it goes into your wash bay.
+## Layout
+- **Hub** (west, X below 0): plaza with the spawn, a race circuit, grandstands, and **6 plots** in two rows of 3 (`Workspace.Plots.Plot1–Plot6`). Each plot has a garage with a wash bay and a showroom with 8 pads.
+- **Central tow truck** (`Workspace.Map.TowTruck`): one stationary truck at the swamp entrance, facing the swamp. It has a `HookLaunchPoint` and a 28-stud-wide `HookCorridor` running the full length of the swamp. **No script uses these yet.** They are ready for the "throw the hook from the truck" mechanic.
+- **Swamp** (east, X 0 to 2200): 10 zones in a line, each 220 studs deep and about 400 wide. There are no walls between zones.
 
-## What is in the place
-- **Plots:** 8 in a row in `Workspace.Plots`, 90 studs apart, fronts facing the swamp. All 8 are live: each player gets one, spawns at it, and has their own wash bay, showroom and hitch.
-- **Swamp** (`Workspace.Swamp`), split in two:
-  - `Gameplay`: invisible markers the scripts read (by tag).
-  - `Art`: zone ground, gates, signs, docks, depth markers, trees, puddles, walls. No script reads any of it.
-
-## Zones (set in `SwampConfig`, not in the map)
-| Zone | Depth | Wrecks | Tow gear needed |
+## Zones (set in `SwampConfig`)
+| # | Zone | Depth | Tow gear |
 |---|---|---|---|
-| The Shallows | 0–200 | Common, Uncommon | 1 (open) |
-| The Mangroves | 200–400 | Common to Epic | 2 Chain |
-| The Deep Swamp | 400–600 | Uncommon to Mythic | 4 Power Winch |
+| 1 | Murkroot Mire | 0–220 | 1 Rope |
+| 2 | Cinderbog | 220–440 | 1 Rope |
+| 3 | Moonpetal Fen | 440–660 | 2 Chain |
+| 4 | Sunken Crown | 660–880 | 2 Chain |
+| 5 | Blackwater Hollow | 880–1100 | 3 Winch |
+| 6 | Frostveil Bog | 1100–1320 | 3 Winch |
+| 7 | Venomveil Marsh | 1320–1540 | 4 Power Winch |
+| 8 | Thunderroot Marsh | 1540–1760 | 4 Power Winch |
+| 9 | Wreckwater Reach | 1760–1980 | 5 Mega Hook |
+| 10 | Starfall Fen | 1980–2200 | 5 Mega Hook |
 
-Depth is measured from the `SwampOrigin` marker. The gate signs and red gate lines in `Art` are decoration: the real gate is that you cannot hook a wreck in a zone above your tow gear.
+Rarity odds shift from Common/Uncommon in zone 1 to Epic/Legendary/Mythic in zone 10. Each zone has its own lighting, fog and color grade (`AtmosphereController`), which follows `SwampConfig` automatically.
 
-## Open questions from the greybox
-- [ ] Is 600 studs deep too far on foot while towing? Time a walk to each zone.
-- [ ] Is the swamp too wide (723 studs)? Could narrow it or bring plots closer.
-- [ ] Tow on foot or drive the tow truck? Currently on foot with a rope.
+## Markers in the map
+- 1 `SwampOrigin` at the swamp entrance (depth 0, pointing east).
+- 140 `WreckSpawn` markers, 14 per zone. Up to 6 wrecks wait in each zone.
+- 10 `SafeZone` boxes, one per zone, on the middle docks.
+- Per plot: `TowDropZone` in front of the garage, and `PlotSpawn` 15 studs from the wash bay car.
+
+## Open questions
+- [ ] Walking a wreck home from zone 10 is about 2,900 studs. On-foot towing only makes sense for the first zones; the hook-throw mechanic is meant to replace it.
+- [ ] The place allows 60 players but has 6 plots. Set max players to 6.
