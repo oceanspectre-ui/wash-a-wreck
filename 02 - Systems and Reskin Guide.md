@@ -84,6 +84,28 @@ Each marker and folder has a `Note` attribute in Studio saying what it is for.
 - Dropping mid-tow leaves the wreck on the ground, hookable again.
 - **Not tested:** a real human playing on a phone, two players at once, real saves.
 
+## Codes (added 2026-11-21)
+Players type a code and get a reward. Each player can use each code once.
+
+| Piece | Where | What to change |
+|---|---|---|
+| The codes | `ServerScriptService.Config.Codes` | Add a row per code: rewards, optional `Enabled = false`, optional `Expires`. Server only, so players can't read the list. The 3 codes in there (`RELEASE`, `SWAMP`, `CHROME`) are placeholders. |
+| Reward types | `ServerScriptService.Util.Rewards` | `Cash` and `Wreck` exist. Add a handler to add a type. Reusable for daily rewards, quests and events. |
+| Logic | `Services.CodeService` | Checks the code, marks it used in the player's save, gives the rewards. |
+| Window | `StarterGui.CodesGui` (greybox) | Replace freely. `CodesController` finds things by tag and name, not layout. |
+
+**GUI contract** (what a replacement window needs):
+- Any button tagged `CodesOpen` opens and closes the window. It can be in any ScreenGui.
+- One frame tagged `CodesWindow` is the window.
+- Inside it, by name: `CodeBox` (TextBox), `RedeemButton` (button), `Status` (TextLabel, optional), `Close` (button, optional), `FitScale` (UIScale, optional).
+
+Notes:
+- Codes are not case sensitive and spaces are ignored.
+- A wrong code and a switched-off code give the same message, and there is a 1.5 second wait between tries, to slow guessing.
+- New or changed codes go live when the game is published and servers restart. There is no server-wide "first 100 players" limit yet.
+
+Also changed: `Main` and `ClientMain` now skip a module that fails to load and print a warning, so one broken script can't stop the others.
+
 ## Maintenance pass on the new map (2026-11-21)
 Fixed:
 - Wrecks now sit on the terrain (sunk 1 stud) instead of at the marker's height, which had left many buried.
