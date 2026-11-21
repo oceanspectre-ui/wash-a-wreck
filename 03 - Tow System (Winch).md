@@ -12,15 +12,30 @@ Built 2026-11-21. Replaces on-foot towing. Nobody walks a wreck home.
 Related: [[00 - Wash a Wreck - Master Plan]], [[02 - Systems and Reskin Guide]].
 
 ## The loop
-(Changed 2026-11-21 after feedback: the hook is thrown first, then dragged with WASD / arrows inside a radius.)
+(Changed twice on 2026-11-21 after feedback: the hook is thrown then dragged inside a radius; and every cast now spawns the player's own wreck.)
 
 1. **Go to the truck.** A TOW TRUCK button (and a Tow Truck row in the Teleport window) sends you to the central tow truck.
 2. **Cast.** Press CAST HOOK (or E). A power meter swings up and down and shows how far the throw will go.
-3. **Throw.** Press THROW! (or Space / E). The hook is thrown straight out from the truck in an arc: more power, further out, up to your gear's reach. Your camera follows it. This is where the throw animation will go.
-4. **Search.** When it lands, a big circle shows how far you can drag the hook from the landing point. Move it along the ground with **WASD, the arrow keys or the thumbstick**. Up on the screen is deeper into the swamp. You have 15 seconds.
-5. **Hook it.** Put the hook on a muddy lump (its ring turns green and the lump lights up) and press HOOK IT (or Space / E). Pressing it on empty ground does nothing bad; you keep searching.
-6. **Haul.** The winch drags the wreck back to the truck while your camera rides along. A strain bar shows how close the line is to breaking.
-7. **Snap or deliver.** If the wreck is too heavy for your line, the line snaps part way, the wreck goes back, and the winch needs 4 seconds to wind in. Otherwise the wreck goes straight into your wash bay and you are sent there too.
+3. **Throw.** Press THROW! (or Space / E). The hook is thrown straight out from the truck in an arc: more power, further out, up to your gear's reach.
+4. **Your wreck appears.** As the hook lands, a muddy wreck bursts up out of the mud somewhere inside the search circle. It is **yours**: outlined in its rarity color, with a "YOUR WRECK" marker above it. Nobody else can hook it.
+5. **Drag the hook to it** with **WASD, the arrow keys or the thumbstick**. The camera keeps both the hook and your wreck on screen. You have 15 seconds.
+6. **It hooks itself.** Touching your wreck with the hook hooks it. No button.
+7. **Haul.** The winch drags the wreck back to the truck. A strain bar shows how close the line is to breaking.
+8. **Snap or deliver.** If the wreck is too heavy for your line, the line snaps and the wreck sinks away. Otherwise it goes straight into your wash bay and you are sent there too.
+
+## The luck roll
+- Every cast always gives a wreck. Nobody competes for wrecks and the swamp is never empty.
+- Its rarity is rolled from the odds of the zone it comes up in (`SwampConfig` `RarityWeights`), then a wreck of that rarity, then a mutation. Deeper throws mean better odds.
+- It is still dirty: a muddy lump, mud color = rarity, lump size = weight. What it is stays hidden until the wash.
+- It comes up 30–90% of the search radius from where the hook lands, on a clear spot.
+- If you do not reach it in time, or cancel, it sinks away.
+- The old shared wrecks scattered around the swamp are switched off (`SwampConfig.AmbientWrecks = false`).
+
+## Smoothness
+- **The haul is played on every screen, not sent frame by frame.** The server writes the haul once (start, goal, timing) and each player's screen works out the exact pose every frame (`Shared.WreckMotion`). This removed the stutter from wrecks arriving in network steps. Rising and sinking work the same way.
+- The hook eases up to speed and to a stop (`TowConfig.RoamAccel`).
+- The close "bite" shot swoops in instead of cutting.
+- Shorter waits: 0.6 s between casts (was 1.5), shorter hold and return after a haul.
 
 ## What tow gear does
 | Tier | Reach | Zones | Search radius | Line holds weight up to | Throw speed | Reel speed |
@@ -43,8 +58,8 @@ All placeholders, in `UpgradeConfig.Tracks.TowGear`. Wreck weights are in `Wreck
 With the Rope in zone 1: every Common hauls fine. The 3 heaviest Uncommons (Farm Tractor, School Bus, Camper Van) snap the line. That is about 1 cast in 7, and it teaches the upgrade.
 
 ## Key design choices
-- **Skill is aiming, not walking.** You choose which lump to go for and steer onto it.
-- **One truck, many players.** Everyone can cast at once. Each player has their own hook. Two players cannot hook the same wreck.
+- **Power is the choice, not walking.** How hard you throw decides which zone your wreck comes from.
+- **One truck, many players.** Everyone can cast at once. Each player has their own hook and their own wreck.
 - **Bay queue.** You can cast while a wreck is in your bay; up to 2 more wait in line. If the haul queues, you stay at the truck for another cast.
 - **Auto return.** A haul that goes straight into your bay sends you to your bay (`TowConfig.AutoReturnToBay`).
 
