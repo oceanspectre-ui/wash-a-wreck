@@ -63,12 +63,12 @@ The first bright pass was too glaring, so it was toned down the same day. Curren
 | Colour saturation (hub total) | +0.10 | +0.37 | +0.24 |
 | Contrast | +0.05 | +0.10 | +0.06 |
 | Bloom intensity | 1.0 | 1.0 | 0.4 |
-| Hub grass | 92,168,72 Grass | 112,222,52 Plastic | 98,196,64 Plastic |
+| Hub grass | 92,168,72 Grass | 112,222,52 Plastic | 92,168,72 Grass (restored: flat plastic looked too smooth) |
 
 - The hub look is the `HUB` line in `AtmosphereController`.
 - `VIBRANCE` in the same script (now 0.08) is added to every area's saturation, swamps included. Raise it for more candy colour; set 0 for the profiles as written.
 - Bloom is a single setting in Lighting for the whole game, so the lower bloom also applies in the swamps.
-- The old grass look is saved on the part as the attribute `OriginalLook`.
+- The hub ground is back to its original Grass material and colour. Do not flatten ground materials: the texture is part of the look.
 - The swamps keep their own moods; they are just a little more saturated.
 
 ## Not done
