@@ -23,6 +23,39 @@ Related: [[02 - Systems and Reskin Guide]], [[04 - Tow Animation and Feel]].
 | Tags | Small tilted yellow label on a card: "BEST SELLER!", "BEST DEAL!". |
 | Colour pairs | Cyan to blue, yellow to orange, pink to purple, orange to red, lime to green. |
 
+## Figma design build (2026-11-21, later the same day)
+The GUI was designed in Figma first (file "Wash a Wreck - UI"), approved, then built in Studio. This replaces the earlier restyle described further down where the two differ.
+
+**What was built**
+| Piece | Where | Notes |
+|---|---|---|
+| Shop window | `MainHUD.ShopPanel.Window` | Blue studded body, lime header, red X, featured card, 4 pass cards, a Boosts card. Drawn at 980x636 and scaled to the screen. |
+| Side buttons | `SideButtons` | Same wide layout and colours as before, in the new style with drawn icons. No Codes button (owner's call). |
+| Money bar | `MoneyHud.Holder.MoneyBar` | Dark studded pill, cash icon, yellow income tag. |
+| Clean bar | `MainHUD.CleanHolder.CleanBar` | Dark track, studded fill. Hidden while towing. |
+| Tow HUD | `TowGui` | Buttons with icons, zone banner, big message, hint pill, throw and strain bars. |
+
+**One place to change art:** `ReplicatedStorage.Shared.UiStyleConfig`.
+- `StudImage`: the stud tile, now a custom see-through stud (not Roblox's grey one).
+- `Icons`: one image id per icon name (Shop, Garage, Upgrades, Index, Teleport, Cash, Coin, Drop, Clover, Crown, Gift, Truck, Hook, Home, Sparkle, Burst, Codes).
+- Any ImageLabel tagged `UiIcon` with attribute `Icon = <name>` shows that icon. Replace an id in the config and it changes everywhere.
+- Any UIScale tagged `FitScale` keeps art drawn in pixels fitted to the screen (attributes `FitWidth`, `FitHeight`, `FitMin`, `FitMax`).
+
+**Source art:** the PNGs are in `ui-assets/` beside these notes on the build machine; `ui-assets/src/sheet.html` holds every icon as vector code and can be re-rendered.
+
+**Old GUI kept:** `ServerStorage._OldGuiBackup.PreFigmaStyle` has MainHUD, MoneyHud, SideButtons and TowGui as they were, including the earlier image-based money bar and clean bar. Copy a piece back into StarterGui to restore it.
+
+**Shop content now:** Featured (x2 Cash), Game Passes (Fast Washer, x2 Cash, Lucky Wrecks, VIP), Boosts (Double Spray). The Cash Packs section was left out, in line with the master plan. Nothing is buyable yet (every `AssetId` is 0).
+
+**Differs from the mockup**
+- Side buttons are wide, not square.
+- The throw bar grows and changes colour (yellow to red). The mockup's full green-to-red meter with a marker would need a small script change.
+- The zone banner shows the zone name only, no "ZONE 1" tag.
+- Not built: rarity tag and washer chip under the clean bar. The "HOLD TO SPRAY" text is still the old plain one (made in code by `WashController`).
+- Garage, Index, Teleport, Codes, Upgrades and Leaderboard windows are not redesigned yet. They picked up the new stud tile only.
+
+**Tested in a Studio playtest:** HUD loads with no errors; money, clean bar and tow buttons are driven by the scripts; the TOW TRUCK teleport shows CAST HOOK, MY BAY and the hint at the truck. **Not tested:** a full cast and haul with the new HUD, buying, a phone screen.
+
 ## Stud pattern (added 2026-11-21)
 Every main UI surface has a light stud pattern over it: window panels and headers, shop and index cards, and the big buttons.
 
