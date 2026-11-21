@@ -51,7 +51,7 @@ Each marker and folder has a `Note` attribute in Studio saying what it is for.
 ## Not modular yet (known debt)
 - ~~One live plot.~~ **Done 2026-11-21:** every Model in `Workspace.Plots` is a live plot (6 on the current map); copy one to add another. A plot needs `Garage.WashBay.Core`, showroom pads, a `TowDropZone` and a `PlotSpawn`. No script uses a plot by name.
 - **Server size.** The place allows 60 players but there are 6 plots. Player 7+ waits in a queue with no plot. Set max players to 6 in Game Settings.
-- **Central tow truck not wired.** `Workspace.Map.TowTruck` has a `HookLaunchPoint` and `HookCorridor`, but towing is still on foot. Decided design, not built: throw the hook from the truck, the winch reels the wreck in, and it goes straight to your bay. Tow gear sets how far you can throw.
+- ~~Central tow truck not wired.~~ **Done 2026-11-21:** towing is now the winch on the central truck. See [[03 - Tow System (Winch)]]. On-foot towing, the hook prompt on wrecks and the `TowDropZone` markers are no longer used.
 - **Teleport window has 3 swamp rows.** The server accepts `Swamp1`–`Swamp10`; add a row named `Swamp7` to the Teleport window to offer it.
 - **One car shape.** Every wreck uses the same wash bay car, recoloured. Per-wreck models need a `CarTemplates` folder and a mud layout per model.
 - **Mud is box-based.** Mud chunks are generated on box faces, so a Blender car needs simple hidden boxes with `MudFaces`, or a new mud method.
@@ -60,7 +60,7 @@ Each marker and folder has a `Note` attribute in Studio saying what it is for.
 | Service | Job |
 |---|---|
 | `WreckService` | Spawns wrecks on markers, rarity by depth, hidden roll at spawn, restock every 5 min |
-| `TowService` | Hook, trail behind the player, slow by weight and tow gear, deliver at the drop zone |
+| `TowService` | The winch: cast from the truck, check the drop point, haul or snap, deliver to the bay ([[03 - Tow System (Winch)]]) |
 | `WashService` | Empty bay until a wreck arrives. New players get the rigged first wreck. Up to 2 wrecks can queue. |
 | `UpgradeService` | Buy 1 / Buy Max for any track in `UpgradeConfig` |
 | `CashService` | Only place cash changes (`Add`, `Spend`) |
