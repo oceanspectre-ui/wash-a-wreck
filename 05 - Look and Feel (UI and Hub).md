@@ -51,18 +51,23 @@ Nothing can be bought yet: every card's `AssetId` is 0, so its button says "Comi
 `StarterGui.TowGui` now uses the same button style. Each button's words are in a child label named `Label`, so the gradient colours the button and not the text. `TowController` writes to that label when it exists.
 
 ## Hub lighting and colour
-| Setting | Before | Now |
-|---|---|---|
-| Ambient light | 90 | 150 |
-| Outdoor ambient | 128 | 190 |
-| Haze | 0.5 | 0 |
-| Fog density | 0.25 | 0.18 |
-| Colour saturation | +0.10 | +0.37 |
-| Contrast | +0.05 | +0.10 |
-| Hub grass | 92,168,72 Grass | 112,222,52 Plastic |
+The first bright pass was too glaring, so it was toned down the same day. Current values sit between the original and that pass.
+
+| Setting | Original | Too bright | Now |
+|---|---|---|---|
+| Sun brightness | 3.0 | 3.2 | 2.3 |
+| Ambient light | 90 | 150 | 112 |
+| Outdoor ambient | 128 | 190 | 150 |
+| Haze | 0.5 | 0 | 0.3 |
+| Fog density | 0.25 | 0.18 | 0.2 |
+| Colour saturation (hub total) | +0.10 | +0.37 | +0.24 |
+| Contrast | +0.05 | +0.10 | +0.06 |
+| Bloom intensity | 1.0 | 1.0 | 0.4 |
+| Hub grass | 92,168,72 Grass | 112,222,52 Plastic | 98,196,64 Plastic |
 
 - The hub look is the `HUB` line in `AtmosphereController`.
-- `VIBRANCE` in the same script (0.12) is added to every area's saturation, swamps included. Raise it for more candy colour; set 0 for the profiles as written.
+- `VIBRANCE` in the same script (now 0.08) is added to every area's saturation, swamps included. Raise it for more candy colour; set 0 for the profiles as written.
+- Bloom is a single setting in Lighting for the whole game, so the lower bloom also applies in the swamps.
 - The old grass look is saved on the part as the attribute `OriginalLook`.
 - The swamps keep their own moods; they are just a little more saturated.
 
