@@ -46,6 +46,24 @@ When rigged models arrive from Blender, keyframed clips can replace any of these
 
 HUD: buttons and messages pop slightly when pressed or shown. The wash HUD hides while the hook is out.
 
+## Mini cutscenes (added 2026-11-21)
+Short designed camera shots on the throw, the reel-in and the snap. They are kept short because a player sees them on every cast.
+
+| Shot | What the camera does | Length |
+|---|---|---|
+| **Charge** | Sits low behind the truck, looking up past the boom at the swamp | While the meter swings |
+| **Throw** | Stays behind the truck for 0.32 s to watch the boom whip, then chases the hook out and rises and tilts down onto the landing | The flight: 0.7–2.6 s |
+| **Bite** | Cuts to a close, low shot of the wreck while the line goes tight and it strains | About 0.75 s |
+| **Ride** | Pulls wide and rides alongside the wreck as it bursts free and is dragged | Until it nears the truck |
+| **Arrive** | Cuts to beside the truck to watch the wreck come in, then the sparkle burst | Last 80 studs |
+| **Snap** | Instead of Arrive: pushes in on the wreck as the line turns red, then kicks back out when it breaks | About 1–2 s |
+
+A zone 1 reel-in is about 3 seconds in total; deeper hauls are longer because the ride is longer.
+
+Every shot is one row in `TowFxConfig.Shots` with its distances and timings. Set `Enabled = false` on any row to switch that shot off; the camera then just follows from behind. The shot code is in `TowFx` (`ChargeShot`, `ThrowShot`, `ReelShot`).
+
+Tested in a playtest by sampling the camera: the throw went from a low look-up (11° up) to a 46° look-down over the landing; the reel-in cut to 17 studs from the wreck, pulled out to 34, then cut to the truck's side; on a snap the view zoomed from 70 to 54 and kicked back out. Not judged by eye in motion yet.
+
 ## Where things are
 | Piece | Where | What to change |
 |---|---|---|
