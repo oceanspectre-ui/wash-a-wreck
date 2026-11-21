@@ -48,7 +48,8 @@ Each marker and folder has a `Note` attribute in Studio saying what it is for.
 | HUD | Tow and upgrade HUDs are built in code by `TowController` and `UpgradeController` | Replace with designed ScreenGuis later; the server side does not change. |
 
 ## Not modular yet (known debt)
-- **One live plot.** `WashService`, `ShowroomService`, `WashController` and `ShowroomController` use `Plot1` by name. Plot2–8 sit in `PlotsInactive` until these run per plot.
+- ~~One live plot.~~ **Done 2026-11-21:** all 8 plots are live. Every Model in `Workspace.Plots` is a plot; copy one to add another. A plot needs `Garage.WashBay.Core`, showroom pads, and `Markers` with a `TowDropZone` and a `PlotSpawn` (tag `PlotSpawn`: where its owner spawns). No script uses a plot by name.
+- **Server size.** The place allows 60 players but there are 8 plots. Player 9+ waits in a queue with no plot. Set max players to 8 in Game Settings.
 - **One car shape.** Every wreck uses the same wash bay car, recoloured. Per-wreck models need a `CarTemplates` folder and a mud layout per model.
 - **Mud is box-based.** Mud chunks are generated on box faces, so a Blender car needs simple hidden boxes with `MudFaces`, or a new mud method.
 

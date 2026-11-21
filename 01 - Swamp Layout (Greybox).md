@@ -15,9 +15,7 @@ Part of [[00 - Wash a Wreck - Master Plan]]. How to swap the art: [[02 - Systems
 Every plot has a **tow hitch** at its front edge. The swamp starts right past the hitches and gets deeper the further you walk. Deeper = rarer wrecks. You hook a wreck, drag it back to your hitch, and it goes into your wash bay.
 
 ## What is in the place
-- **Plots:** 8 in a row, 90 studs apart, fronts facing the swamp.
-  - `Workspace.Plots.Plot1`: the live plot.
-  - `Workspace.PlotsInactive.Plot2–Plot8`: layout-only copies. The wash and showroom scripts still only run on Plot1.
+- **Plots:** 8 in a row in `Workspace.Plots`, 90 studs apart, fronts facing the swamp. All 8 are live: each player gets one, spawns at it, and has their own wash bay, showroom and hitch.
 - **Swamp** (`Workspace.Swamp`), split in two:
   - `Gameplay`: invisible markers the scripts read (by tag).
   - `Art`: zone ground, gates, signs, docks, depth markers, trees, puddles, walls. No script reads any of it.
